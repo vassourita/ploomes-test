@@ -32,5 +32,12 @@ namespace PloomesTest.Core.Services
 
             return await _clientRepository.AddAsync(client);
         }
+
+        public Task<List<Client>> SearchAsync(int page, int pageSize, string query)
+        {
+            return string.IsNullOrEmpty(query)
+                ? _clientRepository.GetAllAsync(page, pageSize)
+                : _clientRepository.SearchByNameAsync(query, page, pageSize);
+        }
     }
 }

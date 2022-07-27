@@ -34,9 +34,12 @@ namespace PloomesTest.Infrastructure.Data.Repositories
             return await _context.Clients.AnyAsync(c => c.FederalDocument == federalDocument);
         }
 
-        public Task<List<Client>> GetAllAsync()
+        public Task<List<Client>> GetAllAsync(int page = 1, int pageSize = 20)
         {
-            return _context.Clients.ToListAsync();
+            return _context.Clients
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public Task<Client> GetByIdAsync(Guid id)
@@ -44,9 +47,13 @@ namespace PloomesTest.Infrastructure.Data.Repositories
             return _context.Clients.SingleOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<List<Client>> SearchByNameAsync(string nameLike)
+        public Task<List<Client>> SearchByNameAsync(string nameLike, int page = 1, int pageSize = 20)
         {
-            return _context.Clients.Where(c => c.Name.ToLower().Contains(nameLike.ToLower())).ToListAsync();
+            return _context.Clients
+                .Where(c => c.Name.ToLower().Contains(nameLike.ToLower()))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<Client> UpdateAsync(Client client)
