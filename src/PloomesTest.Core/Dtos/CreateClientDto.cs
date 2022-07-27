@@ -6,6 +6,7 @@ namespace PloomesTest.Core.Dtos
     {
         [Required]
         [StringLength(14, MinimumLength = 11)]
+        [RegularExpression(@"^\d+$")]
         public string FederalDocument { get; set; }
 
         [Required]
@@ -14,10 +15,12 @@ namespace PloomesTest.Core.Dtos
 
         [Required]
         [StringLength(250, MinimumLength = 1)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [StringLength(11)]
+        [RegularExpression(@"^\d+$")]
         public string Phone { get; set; }
 
         [Required]
@@ -34,6 +37,7 @@ namespace PloomesTest.Core.Dtos
 
         [Required]
         [StringLength(8)]
+        [RegularExpression(@"^\d+$")]
         public string ZipCode { get; set; }
 
         [Required]
