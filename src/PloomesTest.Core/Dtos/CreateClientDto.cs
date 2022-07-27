@@ -37,6 +37,7 @@ namespace PloomesTest.Core.Dtos
         public string ZipCode { get; set; }
 
         [Required]
+        [StringLength(60, MinimumLength = 1)]
         public string Country { get; set; }
     }
 }

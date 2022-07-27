@@ -15,7 +15,7 @@ namespace PloomesTest.Core.Services
 
         public async Task<Client> CreateAsync(CreateClientDto dto)
         {
-            bool clientExists = await _clientRepository.ExistsByFederalDocument(dto.FederalDocument);
+            bool clientExists = await _clientRepository.ExistsByFederalDocumentAsync(dto.FederalDocument);
 
             if (clientExists)
             {

@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  ploomestest-db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "Docker123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
+    volumes:
+      - '/var/opt/mssql'
+    restart: always
