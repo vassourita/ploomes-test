@@ -45,16 +45,17 @@ namespace PloomesTest.WebApi.Controllers
 
             return status switch
             {
-                ClientCreateAction.Created => Created(Url.Link("GetClientById", new { id = client.Id }), client),
-                ClientCreateAction.InvalidDocument => BadRequest(new
+                ClientAction.Ok => Created(Url.Link("GetClientById", new { id = client.Id }), client),
+                ClientAction.InvalidDocument => BadRequest(new
                 {
                     Errors = new[] { "Invalid federal document. Try a valid CPF or CNPJ, without punctuation" }
                 }),
-                ClientCreateAction.DocumentInUse => BadRequest(new
+                ClientAction.DocumentInUse => BadRequest(new
                 {
                     Errors = new[] { "A client with this federal document already exists" }
                 }),
-                _ => throw new InvalidOperationException("Invalid status")
+                ClientAction.NotFound => throw new NotImplementedException(),
+                _ => throw new NotImplementedException()
             };
         }
 
@@ -86,9 +87,11 @@ namespace PloomesTest.WebApi.Controllers
         public async Task<IActionResult> Index(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 20,
-            [FromQuery] string query = null)
+            [FromQuery] string query = null,
+            [FromQuery] string type = null)
         {
-            var clients = await _clientService.SearchAsync(page, pageSize, query);
+            var clients = await _clientService.SearchAsync(
+                page, pageSize, type, query);
 
             return Ok(clients);
         }
@@ -108,6 +111,44 @@ namespace PloomesTest.WebApi.Controllers
             var deleted = await _clientRepository.DeleteAsync(id);
 
             return deleted ? NoContent() : NotFound();
+        }
+
+        /// <summary>
+        /// Creates a new client.
+        /// </summary>
+        /// <param name="dto">The payload to create the client.</param>
+        /// <returns>A 201 response with the created client or a 400 response with the request errors.</returns>
+        [HttpPut]
+        [Route("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Client))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateClientDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    Errors = ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage))
+                });
+            }
+
+            var (status, client) = await _clientService.UpdateAsync(id, dto);
+
+            return status switch
+            {
+                ClientAction.Ok => Ok(client),
+                ClientAction.InvalidDocument => BadRequest(new
+                {
+                    Errors = new[] { "Invalid federal document. Try a valid CPF or CNPJ, without punctuation" }
+                }),
+                ClientAction.DocumentInUse => BadRequest(new
+                {
+                    Errors = new[] { "A client with this federal document already exists" }
+                }),
+                ClientAction.NotFound => NotFound(),
+                _ => throw new NotImplementedException()
+            };
         }
     }
 }
