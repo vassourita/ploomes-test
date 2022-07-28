@@ -12,7 +12,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     options =>
     {
-        options.SwaggerDoc("v1", new OpenApiInfo { Title = "PloomesTest API", Version = "v1" });
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "PloomesTest API",
+            Version = "v1",
+            Contact = new OpenApiContact
+            {
+                Name = "Vinicius Vassão",
+                Email = "vassao.dev@gmail.com",
+                Url = new Uri("https://github.com/vassourita")
+            },
+        });
         options.SchemaFilter<ExampleSchemaFilter>();
         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PloomesTest.WebApi.xml"), true);
         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PloomesTest.Core.xml"), true);
