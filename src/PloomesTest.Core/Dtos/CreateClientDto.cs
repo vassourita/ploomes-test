@@ -63,7 +63,7 @@ namespace PloomesTest.Core.Dtos
         /// Client's zip code.
         /// </summary>
         [Required]
-        [StringLength(8)]
+        [StringLength(8, MinimumLength = 8)]
         [RegularExpression(@"^\d+$")]
         public string ZipCode { get; set; }
 
