@@ -19,7 +19,7 @@ namespace PloomesTest.Core.Dtos
         public string Email { get; set; }
 
         [Required]
-        [StringLength(11)]
+        [StringLength(11, MinimumLength = 10)]
         [RegularExpression(@"^\d+$")]
         public string Phone { get; set; }
 

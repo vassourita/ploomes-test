@@ -26,14 +26,14 @@ namespace PloomesTest.Core.Services
                 ? ClientType.PhysicalPerson
                 : ClientType.LegalPerson;
 
-            Client client = new(clientType, dto.Name,
-                dto.FederalDocument, dto.Email, dto.Phone,
-                dto.Address, dto.City, dto.State, dto.ZipCode, dto.Country);
+            Client client = new(clientType, dto.FederalDocument,
+                dto.Name, dto.Email, dto.Phone, dto.Address,
+                dto.City, dto.State, dto.ZipCode, dto.Country);
 
             return await _clientRepository.AddAsync(client);
         }
 
-        public Task<List<Client>> SearchAsync(int page, int pageSize, string query)
+        public Task<List<Client>> SearchAsync(int page, int pageSize, string query = null)
         {
             return string.IsNullOrEmpty(query)
                 ? _clientRepository.GetAllAsync(page, pageSize)

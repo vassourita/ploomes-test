@@ -33,10 +33,21 @@ namespace PloomesTest.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Store([FromBody] CreateClientDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    Errors = ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage))
+                });
+            }
+
             Client client = await _clientService.CreateAsync(dto);
 
             return client == null
-                ? BadRequest()
+                ? BadRequest(new
+                {
+                    Errors = new[] { "A client with this federal document already exists." }
+                })
                 : Created(Url.Link("GetClientById", new { id = client.Id }), client);
         }
 
@@ -65,9 +76,9 @@ namespace PloomesTest.WebApi.Controllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Client>))]
-        public async Task<IActionResult> Index([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string query)
+        public async Task<IActionResult> Index([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string query = null)
         {
-            IEnumerable<Client> clients = await _clientService.SearchAsync(page, pageSize, query);
+            List<Client> clients = await _clientService.SearchAsync(page, pageSize, query);
 
             return Ok(clients);
         }
