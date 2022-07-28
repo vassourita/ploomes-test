@@ -16,17 +16,23 @@ namespace PloomesTest.Infrastructure.Data.Repositories
 
         public async Task<Client> AddAsync(Client client)
         {
-            _ = await _context.Clients.AddAsync(client);
-            _ = await _context.SaveChangesAsync();
+            await _context.Clients.AddAsync(client);
+            await _context.SaveChangesAsync();
 
             return client;
         }
 
-        public Task<int> DeleteAsync(Client id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            _ = _context.Clients.Remove(id);
+            var client = await GetByIdAsync(id);
 
-            return _context.SaveChangesAsync();
+            if (client == null)
+                return false;
+
+            _context.Clients.Remove(client);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<bool> ExistsByFederalDocumentAsync(string federalDocument)
@@ -60,9 +66,8 @@ namespace PloomesTest.Infrastructure.Data.Repositories
 
         public async Task<Client> UpdateAsync(Client client)
         {
-            _ = _context.Clients.Update(client);
-
-            _ = await _context.SaveChangesAsync();
+            _context.Clients.Update(client);
+            await _context.SaveChangesAsync();
 
             return client;
         }

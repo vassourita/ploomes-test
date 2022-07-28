@@ -4,22 +4,40 @@ using PloomesTest.Core.Repositories;
 
 namespace PloomesTest.Core.Services
 {
+    public enum ClientCreateAction
+    {
+        Created,
+        InvalidDocument,
+        DocumentInUse
+    }
+
     public class ClientService
     {
         private readonly IClientRepository _clientRepository;
+        private readonly FederalDocumentService _federalDocumentService;
 
-        public ClientService(IClientRepository clientRepository)
+        public ClientService(
+            IClientRepository clientRepository,
+            FederalDocumentService federalDocumentService)
         {
+            _federalDocumentService = federalDocumentService;
             _clientRepository = clientRepository;
         }
 
-        public async Task<Client> CreateAsync(CreateClientDto dto)
+        public async Task<(ClientCreateAction, Client)> CreateAsync(CreateClientDto dto)
         {
+            var isValidDocument = _federalDocumentService.Validate(dto.FederalDocument);
+
+            if (!isValidDocument)
+            {
+                return (ClientCreateAction.InvalidDocument, null);
+            }
+
             var clientExists = await _clientRepository.ExistsByFederalDocumentAsync(dto.FederalDocument);
 
             if (clientExists)
             {
-                return null;
+                return (ClientCreateAction.DocumentInUse, null);
             }
 
             var clientType = dto.FederalDocument.Length == 11
@@ -30,7 +48,7 @@ namespace PloomesTest.Core.Services
                 dto.Name, dto.Email, dto.Phone, dto.Address,
                 dto.City, dto.State, dto.ZipCode, dto.Country);
 
-            return await _clientRepository.AddAsync(client);
+            return (ClientCreateAction.Created, await _clientRepository.AddAsync(client));
         }
 
         public Task<List<Client>> SearchAsync(int page, int pageSize, string query = null)

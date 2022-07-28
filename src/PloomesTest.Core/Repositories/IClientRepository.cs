@@ -9,7 +9,7 @@ namespace PloomesTest.Core.Repositories
         Task<List<Client>> SearchByNameAsync(string nameLike, int page, int pageSize);
         Task<Client> AddAsync(Client client);
         Task<Client> UpdateAsync(Client client);
-        Task<int> DeleteAsync(Client id);
+        Task<bool> DeleteAsync(Guid id);
         Task<bool> ExistsByFederalDocumentAsync(string federalDocument);
     }
 }

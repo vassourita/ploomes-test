@@ -18,6 +18,7 @@ namespace PloomesTest.Infrastructure
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking))
                 .AddScoped<IClientRepository, EFClientRepository>()
+                .AddScoped<FederalDocumentService>()
                 .AddScoped<ClientService>();
         }
     }

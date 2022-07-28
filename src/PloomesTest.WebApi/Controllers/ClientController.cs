@@ -41,14 +41,21 @@ namespace PloomesTest.WebApi.Controllers
                 });
             }
 
-            Client client = await _clientService.CreateAsync(dto);
+            var (status, client) = await _clientService.CreateAsync(dto);
 
-            return client == null
-                ? BadRequest(new
+            return status switch
+            {
+                ClientCreateAction.Created => Created(Url.Link("GetClientById", new { id = client.Id }), client),
+                ClientCreateAction.InvalidDocument => BadRequest(new
                 {
-                    Errors = new[] { "A client with this federal document already exists." }
-                })
-                : Created(Url.Link("GetClientById", new { id = client.Id }), client);
+                    Errors = new[] { "Invalid federal document. Try a valid CPF or CNPJ, without punctuation" }
+                }),
+                ClientCreateAction.DocumentInUse => BadRequest(new
+                {
+                    Errors = new[] { "A client with this federal document already exists" }
+                }),
+                _ => throw new InvalidOperationException("Invalid status")
+            };
         }
 
         /// <summary>
@@ -63,7 +70,7 @@ namespace PloomesTest.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Show([FromRoute] Guid id)
         {
-            Client client = await _clientRepository.GetByIdAsync(id);
+            var client = await _clientRepository.GetByIdAsync(id);
 
             return client == null ? NotFound() : Ok(client);
         }
@@ -76,11 +83,31 @@ namespace PloomesTest.WebApi.Controllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Client>))]
-        public async Task<IActionResult> Index([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string query = null)
+        public async Task<IActionResult> Index(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] string query = null)
         {
-            List<Client> clients = await _clientService.SearchAsync(page, pageSize, query);
+            var clients = await _clientService.SearchAsync(page, pageSize, query);
 
             return Ok(clients);
+        }
+
+        /// <summary>
+        /// Gets the client with the given id.
+        /// </summary>
+        /// <param name="id">The client id.</param>
+        /// <returns>A 200 response with the found client or a 404 empty response if it was not found.</returns>
+        [HttpDelete]
+        [Route("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Destroy([FromRoute] Guid id)
+        {
+            var deleted = await _clientRepository.DeleteAsync(id);
+
+            return deleted ? NoContent() : NotFound();
         }
     }
 }
