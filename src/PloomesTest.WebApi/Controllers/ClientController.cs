@@ -4,6 +4,7 @@ using PloomesTest.Core.Dtos;
 using PloomesTest.Core.Entities;
 using PloomesTest.Core.Repositories;
 using PloomesTest.Core.Services;
+using PloomesTest.WebApi.Models;
 
 namespace PloomesTest.WebApi.Controllers
 {
@@ -30,7 +31,7 @@ namespace PloomesTest.WebApi.Controllers
         [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Client))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorList))]
         public async Task<IActionResult> Store([FromBody] CreateClientDto dto)
         {
             if (!ModelState.IsValid)
@@ -132,7 +133,7 @@ namespace PloomesTest.WebApi.Controllers
         [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Client))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorList))]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateClientDto dto)
         {
             if (!ModelState.IsValid)
