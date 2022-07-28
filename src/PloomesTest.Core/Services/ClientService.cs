@@ -56,18 +56,11 @@ namespace PloomesTest.Core.Services
             return (ClientAction.Ok, await _clientRepository.AddAsync(client));
         }
 
-        public async Task<List<Client>> SearchAsync(int page, int pageSize, string type = null, string query = null)
+        public async Task<List<Client>> SearchAsync(int page, int pageSize, ClientType? type = null, string query = null)
         {
-            ClientType? clientType = type switch
-            {
-                "person" => ClientType.PhysicalPerson,
-                "company" => ClientType.Company,
-                _ => null
-            };
-
             return string.IsNullOrEmpty(query)
-                ? await _clientRepository.GetAllAsync(page, pageSize, clientType)
-                : await _clientRepository.SearchByNameAsync(query, page, pageSize, clientType);
+                ? await _clientRepository.GetAllAsync(page, pageSize, type)
+                : await _clientRepository.SearchByNameAsync(query, page, pageSize, type);
         }
 
         public async Task<(ClientAction, Client)> UpdateAsync(Guid id, UpdateClientDto dto)
@@ -93,6 +86,7 @@ namespace PloomesTest.Core.Services
             }
 
             client = _mapper.Map(dto, client);
+            client.UpdatedAt = DateTime.UtcNow;
 
             return (ClientAction.Ok, await _clientRepository.UpdateAsync(client));
         }

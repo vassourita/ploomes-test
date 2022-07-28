@@ -11,7 +11,7 @@ namespace PloomesTest.WebApi.Swagger
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
-            if (context.Type == typeof(CreateClientDto))
+            if (context.Type == typeof(CreateClientDto) || context.Type == typeof(UpdateClientDto))
             {
                 schema.Example = new OpenApiObject
                 {

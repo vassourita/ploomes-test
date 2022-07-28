@@ -82,7 +82,7 @@ namespace PloomesTest.WebApi.Controllers
         /// <param name="page">The page number.</param>
         /// <param name="pageSize">The page size.</param>
         /// <param name="query">The company name to be searched.</param>
-        /// <param name="type">The company type to be filtered. Must be 'person' or 'company', oyherwise it will be ignored;</param>
+        /// <param name="type">The company type to be filtered. Must be 'person' or 'company', otherwise it will be ignored.</param>
         /// <returns>A 200 response with the found clients.</returns>
         [HttpGet]
         [Produces("application/json")]
@@ -93,18 +93,15 @@ namespace PloomesTest.WebApi.Controllers
             [FromQuery] string query = null,
             [FromQuery] string type = null)
         {
-            if (type != null)
+            ClientType? clientType = type?.ToLower() switch
             {
-                type = type.ToLower() switch
-                {
-                    "person" => ClientType.PhysicalPerson.ToString(),
-                    "company" => ClientType.Company.ToString(),
-                    _ => null,
-                };
-            }
+                "person" => ClientType.PhysicalPerson,
+                "company" => ClientType.Company,
+                _ => null
+            };
 
             var clients = await _clientService.SearchAsync(
-                page, pageSize, type, query);
+                page, pageSize, clientType, query);
 
             return Ok(clients);
         }

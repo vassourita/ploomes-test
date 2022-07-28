@@ -6,17 +6,17 @@ using PloomesTest.WebApi.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.InjectDependencies(builder.Configuration);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     options =>
     {
         options.SwaggerDoc("v1", new OpenApiInfo { Title = "PloomesTest API", Version = "v1" });
         options.SchemaFilter<ExampleSchemaFilter>();
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PloomesTest.WebApi.xml"), true);
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PloomesTest.Core.xml"), true);
+
     });
 builder.Services.Configure<ApiBehaviorOptions>(
     options => options.SuppressModelStateInvalidFilter = true
@@ -24,10 +24,9 @@ builder.Services.Configure<ApiBehaviorOptions>(
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger()
+    _ = app.UseSwagger()
         .UseSwaggerUI(
         options =>
         {
