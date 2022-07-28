@@ -3,11 +3,14 @@ namespace PloomesTest.Core.Entities
     public enum ClientType
     {
         PhysicalPerson,
-        LegalPerson
+        Company
     }
 
     public class Client
     {
+        // For EF
+        protected Client() { }
+
         public Client(ClientType type, string federalDocument, string name, string email, string phone, string address, string city, string state, string zipCode, string country)
         {
             Id = Guid.NewGuid();
@@ -49,6 +52,6 @@ namespace PloomesTest.Core.Entities
         public string Country { get; set; }
 
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

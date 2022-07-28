@@ -42,7 +42,7 @@ namespace PloomesTest.Core.Services
 
             var clientType = dto.FederalDocument.Length == 11
                 ? ClientType.PhysicalPerson
-                : ClientType.LegalPerson;
+                : ClientType.Company;
 
             Client client = new(clientType, dto.FederalDocument,
                 dto.Name, dto.Email, dto.Phone, dto.Address,
