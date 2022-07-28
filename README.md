@@ -6,9 +6,20 @@
 
 This is a simple REST API for a single resource, where you can create, see, update, and delete items.
 
+Swagger endpoints:
+
 [Swagger UI](https://ploomestest-webapi.azurewebsites.net/)
 
 [Swagger Json Docs](https://ploomestest-webapi.azurewebsites.net/swagger/v1/swagger.json)
+
+Useful endpoints to test the API:
+
+[CPF generator](https://www.4devs.com.br/gerador_de_cpf)
+
+[CNPJ generator](https://www.4devs.com.br/gerador_de_cnpj)
+
+<br/>
+<br/>
 
 <h1 id="ploomestest-api-client">Client</h1>
 

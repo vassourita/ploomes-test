@@ -32,7 +32,7 @@ namespace PloomesTest.WebApi.Swagger
                 schema.Example = new OpenApiObject
                 {
                     ["id"] = new OpenApiString(Guid.NewGuid().ToString()),
-                    ["type"] = new OpenApiInteger(0),
+                    ["type"] = new OpenApiInteger(1),
                     ["typeName"] = new OpenApiString("Company"),
                     ["federalDocument"] = new OpenApiString("12345678000190"),
                     ["name"] = new OpenApiString("Ploomes"),

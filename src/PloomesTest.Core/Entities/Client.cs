@@ -63,6 +63,10 @@ namespace PloomesTest.Core.Entities
         /// <summary>
         /// Client's CPF or CNPJ.
         /// </summary>
+        /// <remarks>
+        /// CPF generator: https://www.4devs.com.br/gerador_de_cpf
+        /// CNPJ generator: https://www.4devs.com.br/gerador_de_cnpj
+        /// </remarks>
         [Required]
         public string FederalDocument { get; set; }
 

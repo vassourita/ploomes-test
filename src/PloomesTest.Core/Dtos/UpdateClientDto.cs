@@ -10,6 +10,10 @@ namespace PloomesTest.Core.Dtos
         /// <summary>
         /// Client's CPF or CNPJ. Must be unique. Should contain only digits (11 or 14). The length will define the client type. 
         /// </summary>
+        /// <remarks>
+        /// CPF generator: https://www.4devs.com.br/gerador_de_cpf
+        /// CNPJ generator: https://www.4devs.com.br/gerador_de_cnpj
+        /// </remarks>
         [StringLength(14, MinimumLength = 11)]
         [RegularExpression(@"^\d+$")]
         public string FederalDocument { get; set; }
