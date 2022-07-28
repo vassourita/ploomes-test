@@ -45,19 +45,25 @@ namespace PloomesTest.Infrastructure.Data.Repositories
             return _context.Clients.SingleOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<List<Client>> GetAllAsync(int page = 1, int pageSize = 20)
+        public Task<List<Client>> GetAllAsync(int page = 1, int pageSize = 20, ClientType? type = null)
         {
-            return _context.Clients
-                .OrderBy(c => c.CreatedAt)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            var query = _context.Clients.AsQueryable();
+
+            if (type.HasValue)
+                query = query.Where(c => c.Type == type.Value);
+
+            return query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
-        public Task<List<Client>> SearchByNameAsync(string nameLike, int page = 1, int pageSize = 20)
+        public Task<List<Client>> SearchByNameAsync(string nameLike, int page = 1, int pageSize = 20, ClientType? type = null)
         {
-            return _context.Clients
-                .Where(c => c.Name.Contains(nameLike))
+            var query = _context.Clients
+                .Where(c => c.Name.Contains(nameLike));
+
+            if (type.HasValue)
+                query = query.Where(c => c.Type == type);
+
+            return query
                 .OrderBy(c => c.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
