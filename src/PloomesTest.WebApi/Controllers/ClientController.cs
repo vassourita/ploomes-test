@@ -54,7 +54,6 @@ namespace PloomesTest.WebApi.Controllers
                 {
                     Errors = new[] { "A client with this federal document already exists" }
                 }),
-                ClientAction.NotFound => throw new NotImplementedException(),
                 _ => throw new NotImplementedException()
             };
         }
@@ -158,6 +157,10 @@ namespace PloomesTest.WebApi.Controllers
                     Errors = new[] { "A client with this federal document already exists" }
                 }),
                 ClientAction.NotFound => NotFound(),
+                ClientAction.TypeChangeProhibited => BadRequest(new
+                {
+                    Errors = new[] { "Changing the client type is prohibited. The federal document length must be the same" }
+                }),
                 _ => throw new NotImplementedException()
             };
         }

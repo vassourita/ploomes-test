@@ -8,8 +8,8 @@ namespace PloomesTest.Infrastructure.Mapping
     {
         public ClientProfile()
         {
-            CreateMap<CreateClientDto, Client>();
-            CreateMap<UpdateClientDto, Client>();
+            CreateMap<UpdateClientDto, Client>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

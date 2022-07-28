@@ -16,8 +16,8 @@ namespace PloomesTest.Infrastructure.Data.Repositories
 
         public async Task<Client> AddAsync(Client client)
         {
-            await _context.Clients.AddAsync(client);
-            await _context.SaveChangesAsync();
+            _ = await _context.Clients.AddAsync(client);
+            _ = await _context.SaveChangesAsync();
 
             return client;
         }
@@ -27,10 +27,12 @@ namespace PloomesTest.Infrastructure.Data.Repositories
             var client = await GetByIdAsync(id);
 
             if (client == null)
+            {
                 return false;
+            }
 
-            _context.Clients.Remove(client);
-            await _context.SaveChangesAsync();
+            _ = _context.Clients.Remove(client);
+            _ = await _context.SaveChangesAsync();
 
             return true;
         }
@@ -50,7 +52,9 @@ namespace PloomesTest.Infrastructure.Data.Repositories
             var query = _context.Clients.AsQueryable();
 
             if (type.HasValue)
+            {
                 query = query.Where(c => c.Type == type.Value);
+            }
 
             return query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
@@ -61,7 +65,9 @@ namespace PloomesTest.Infrastructure.Data.Repositories
                 .Where(c => c.Name.Contains(nameLike));
 
             if (type.HasValue)
+            {
                 query = query.Where(c => c.Type == type);
+            }
 
             return query
                 .OrderBy(c => c.CreatedAt)
@@ -72,8 +78,8 @@ namespace PloomesTest.Infrastructure.Data.Repositories
 
         public async Task<Client> UpdateAsync(Client client)
         {
-            _context.Clients.Update(client);
-            await _context.SaveChangesAsync();
+            _context.Entry(client).CurrentValues.SetValues(client);
+            _ = await _context.SaveChangesAsync();
 
             return client;
         }

@@ -10,7 +10,8 @@ namespace PloomesTest.Core.Services
         Ok,
         InvalidDocument,
         DocumentInUse,
-        NotFound
+        NotFound,
+        TypeChangeProhibited
     }
 
     public class ClientService
@@ -77,6 +78,11 @@ namespace PloomesTest.Core.Services
             if (client == null)
             {
                 return (ClientAction.NotFound, null);
+            }
+
+            if (dto.FederalDocument != null && client.FederalDocument.Length != dto.FederalDocument.Length)
+            {
+                return (ClientAction.TypeChangeProhibited, null);
             }
 
             if (client.FederalDocument != dto.FederalDocument &&

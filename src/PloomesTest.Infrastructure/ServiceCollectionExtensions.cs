@@ -16,12 +16,9 @@ namespace PloomesTest.Infrastructure
         {
             return services
                 .AddAutoMapper(config =>
-                {
-                    config.AddProfile<ClientProfile>();
-                })
+                    config.AddProfile<ClientProfile>())
                 .AddDbContext<DataContext>(opt => opt
-                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking))
+                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection")))
                 .AddScoped<IClientRepository, EFClientRepository>()
                 .AddScoped<FederalDocumentService>()
                 .AddScoped<ClientService>();
