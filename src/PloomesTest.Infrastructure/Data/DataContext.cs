@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 using PloomesTest.Core.Entities;
 
 namespace PloomesTest.Infrastructure.Data
@@ -62,12 +63,10 @@ namespace PloomesTest.Infrastructure.Data
                     .HasMaxLength(60);
 
                 _ = builder.Property(c => c.CreatedAt)
-                    .IsRequired()
-                    .ValueGeneratedOnAdd();
+                    .IsRequired();
 
                 _ = builder.Property(c => c.UpdatedAt)
-                    .IsRequired()
-                    .ValueGeneratedOnAddOrUpdate();
+                    .IsRequired();
             });
 
             base.OnModelCreating(modelBuilder);

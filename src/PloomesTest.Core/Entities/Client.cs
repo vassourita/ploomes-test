@@ -28,6 +28,7 @@ namespace PloomesTest.Core.Entities
         public Guid Id { get; set; }
 
         public ClientType Type { get; set; }
+        public string TypeName => Type.ToString();
 
         public string FederalDocument { get; set; }
 
