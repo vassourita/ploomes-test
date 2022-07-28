@@ -15,14 +15,14 @@ namespace PloomesTest.Core.Services
 
         public async Task<Client> CreateAsync(CreateClientDto dto)
         {
-            bool clientExists = await _clientRepository.ExistsByFederalDocumentAsync(dto.FederalDocument);
+            var clientExists = await _clientRepository.ExistsByFederalDocumentAsync(dto.FederalDocument);
 
             if (clientExists)
             {
                 return null;
             }
 
-            ClientType clientType = dto.FederalDocument.Length == 11
+            var clientType = dto.FederalDocument.Length == 11
                 ? ClientType.PhysicalPerson
                 : ClientType.LegalPerson;
 

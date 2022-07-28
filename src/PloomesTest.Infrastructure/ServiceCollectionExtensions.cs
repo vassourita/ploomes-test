@@ -14,7 +14,7 @@ namespace PloomesTest.Infrastructure
         public static IServiceCollection InjectDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             return services
-                .AddDbContext<DataContext>(opt => _ = opt
+                .AddDbContext<DataContext>(opt => opt
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking))
                 .AddScoped<IClientRepository, EFClientRepository>()

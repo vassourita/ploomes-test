@@ -8,7 +8,7 @@ namespace PloomesTest.Infrastructure.Data
         public DataContext CreateDbContext(string[] args)
         {
             DbContextOptionsBuilder<DataContext> optionsBuilder = new();
-            _ = optionsBuilder.UseSqlServer(@"Server=localhost;Database=master;User=sa;Password=Docker123!;");
+            optionsBuilder.UseSqlServer(@"Server=localhost;Database=master;User=sa;Password=Docker123!;");
 
             return new DataContext(optionsBuilder.Options);
         }

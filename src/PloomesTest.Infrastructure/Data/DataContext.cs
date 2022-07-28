@@ -14,58 +14,58 @@ namespace PloomesTest.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            _ = modelBuilder.Entity<Client>(builder =>
+            modelBuilder.Entity<Client>(builder =>
             {
-                _ = builder.HasKey(c => c.Id);
+                builder.HasKey(c => c.Id);
 
-                _ = builder.Property(c => c.Type)
+                builder.Property(c => c.Type)
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasConversion(
                         v => v.ToString(),
                         v => (ClientType)Enum.Parse(typeof(ClientType), v));
 
-                _ = builder.Property(c => c.FederalDocument)
+                builder.Property(c => c.FederalDocument)
                     .IsRequired()
                     .HasMaxLength(14);
 
-                _ = builder.Property(c => c.Name)
+                builder.Property(c => c.Name)
                     .IsRequired()
                     .HasMaxLength(250);
 
-                _ = builder.Property(c => c.Email)
+                builder.Property(c => c.Email)
                     .IsRequired()
                     .HasMaxLength(250);
 
-                _ = builder.Property(c => c.Phone)
+                builder.Property(c => c.Phone)
                     .IsRequired()
                     .HasMaxLength(11);
 
-                _ = builder.Property(c => c.Address)
+                builder.Property(c => c.Address)
                     .IsRequired()
                     .HasMaxLength(200);
 
-                _ = builder.Property(c => c.City)
+                builder.Property(c => c.City)
                     .IsRequired()
                     .HasMaxLength(100);
 
-                _ = builder.Property(c => c.State)
+                builder.Property(c => c.State)
                     .IsRequired()
                     .HasMaxLength(40);
 
-                _ = builder.Property(c => c.ZipCode)
+                builder.Property(c => c.ZipCode)
                     .IsRequired()
                     .HasMaxLength(8)
                     .IsFixedLength();
 
-                _ = builder.Property(c => c.Country)
+                builder.Property(c => c.Country)
                     .IsRequired()
                     .HasMaxLength(60);
 
-                _ = builder.Property(c => c.CreatedAt)
+                builder.Property(c => c.CreatedAt)
                     .IsRequired();
 
-                _ = builder.Property(c => c.UpdatedAt)
+                builder.Property(c => c.UpdatedAt)
                     .IsRequired();
             });
 
