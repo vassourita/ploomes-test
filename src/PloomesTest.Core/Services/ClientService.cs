@@ -68,7 +68,7 @@ namespace PloomesTest.Core.Services
         {
             var isValidDocument = _federalDocumentService.Validate(dto.FederalDocument);
 
-            if (!isValidDocument)
+            if (dto.FederalDocument != null && !isValidDocument)
             {
                 return (ClientAction.InvalidDocument, null);
             }
@@ -85,7 +85,8 @@ namespace PloomesTest.Core.Services
                 return (ClientAction.TypeChangeProhibited, null);
             }
 
-            if (client.FederalDocument != dto.FederalDocument &&
+            if (dto.FederalDocument != null &&
+                client.FederalDocument != dto.FederalDocument &&
                 await _clientRepository.ExistsByFederalDocumentAsync(dto.FederalDocument))
             {
                 return (ClientAction.DocumentInUse, null);
