@@ -123,7 +123,7 @@ namespace PloomesTest.WebApi.Controllers
         }
 
         /// <summary>
-        /// Updates a client.
+        /// Updates the client with the given id.
         /// </summary>
         /// <param name="id">The id of the client to be updated.</param>
         /// <param name="dto">The payload to update the client.</param>

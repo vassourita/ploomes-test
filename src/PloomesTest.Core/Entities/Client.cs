@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PloomesTest.Core.Entities
 {
     /// <summary>
@@ -43,71 +45,85 @@ namespace PloomesTest.Core.Entities
         /// <summary>
         /// Client's unique identifier.
         /// </summary>
+        [Required]
         public Guid Id { get; private set; }
 
         /// <summary>
         /// Client's type id.
         /// </summary>
+        [Required]
         public ClientType Type { get; set; }
 
         /// <summary>
         /// Client's type.
         /// </summary>
+        [Required]
         public string TypeName => Type.ToString();
 
         /// <summary>
         /// Client's CPF or CNPJ.
         /// </summary>
+        [Required]
         public string FederalDocument { get; set; }
 
         /// <summary>
         /// Client's name.
         /// </summary>
+        [Required]
         public string Name { get; set; }
 
         /// <summary>
         /// Client's email address.
         /// </summary>
+        [Required]
         public string Email { get; set; }
 
         /// <summary>
         /// Client's phone number.
         /// </summary>
+        [Required]
         public string Phone { get; set; }
 
         /// <summary>
         /// Client's address.
         /// </summary>
+        [Required]
         public string Address { get; set; }
 
         /// <summary>
         /// Client's city.
         /// </summary>
+        [Required]
         public string City { get; set; }
 
         /// <summary>
         /// Client's state.
         /// </summary>
+        [Required]
         public string State { get; set; }
 
         /// <summary>
         /// Client's zip code.
         /// </summary>
+        [Required]
         public string ZipCode { get; set; }
 
         /// <summary>
         /// Client's country.
         /// </summary>
+        [Required]
         public string Country { get; set; }
 
         /// <summary>
         /// Client's creation date.
         /// </summary>
+        [Required]
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Client's last update date.
         /// </summary>
+        [Required]
         public DateTime UpdatedAt { get; set; }
     }
 }
