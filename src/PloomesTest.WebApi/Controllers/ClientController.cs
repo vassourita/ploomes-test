@@ -77,10 +77,13 @@ namespace PloomesTest.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets all categories within the given page, page size and query.
+        /// Gets all clients within the given page, page size, query and client type.
         /// </summary>
-        /// <param name="search">The search options.</param>
-        /// <returns>A 200 response with the found categories.</returns>
+        /// <param name="page">The page number.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="query">The company name to be searched.</param>
+        /// <param name="type">The company type to be filtered. Must be 'person' or 'company', oyherwise it will be ignored;</param>
+        /// <returns>A 200 response with the found clients.</returns>
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Client>))]
@@ -90,6 +93,16 @@ namespace PloomesTest.WebApi.Controllers
             [FromQuery] string query = null,
             [FromQuery] string type = null)
         {
+            if (type != null)
+            {
+                type = type.ToLower() switch
+                {
+                    "person" => ClientType.PhysicalPerson.ToString(),
+                    "company" => ClientType.Company.ToString(),
+                    _ => null,
+                };
+            }
+
             var clients = await _clientService.SearchAsync(
                 page, pageSize, type, query);
 
@@ -97,10 +110,10 @@ namespace PloomesTest.WebApi.Controllers
         }
 
         /// <summary>
-        /// Gets the client with the given id.
+        /// Deletes the client with the given id.
         /// </summary>
-        /// <param name="id">The client id.</param>
-        /// <returns>A 200 response with the found client or a 404 empty response if it was not found.</returns>
+        /// <param name="id">The id of the client to be deleted.</param>
+        /// <returns>A 204 response or a 404 empty response if it was not found.</returns>
         [HttpDelete]
         [Route("{id}")]
         [Produces("application/json")]
@@ -114,10 +127,11 @@ namespace PloomesTest.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates a new client.
+        /// Updates a client.
         /// </summary>
-        /// <param name="dto">The payload to create the client.</param>
-        /// <returns>A 201 response with the created client or a 400 response with the request errors.</returns>
+        /// <param name="id">The id of the client to be updated.</param>
+        /// <param name="dto">The payload to update the client.</param>
+        /// <returns>A 200 response with the updated client or a 400 response with the request errors.</returns>
         [HttpPut]
         [Route("{id}")]
         [Produces("application/json")]
