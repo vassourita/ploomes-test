@@ -8,9 +8,9 @@ This is a simple REST API for a single resource, where you can create, see, upda
 
 Swagger endpoints:
 
-[Swagger UI](https://ploomestest-webapi.azurewebsites.net/)
+[Swagger UI](https://ploomestest-webapi.azurewebsites.net/)  **[OFFLINE]**
 
-[Swagger Json Docs](https://ploomestest-webapi.azurewebsites.net/swagger/v1/swagger.json)
+[Swagger Json Docs](https://ploomestest-webapi.azurewebsites.net/swagger/v1/swagger.json)  **[OFFLINE]**
 
 Useful endpoints to test the API:
 
